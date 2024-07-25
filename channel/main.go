@@ -5,35 +5,30 @@ import (
 	"time"
 )
 
+func worker(ch chan bool) {
+	time.Sleep(1 * time.Second)
+	fmt.Println("hello")
+	ch <- true
+}
+
 func main() {
-	ch1 := make(chan string)
-
+	msg1 := make(chan string)
+	msg2 := make(chan string)
 	go func() {
-		//time.Sleep(3 * time.Second)
-		ch1 <- "ch1"
+		time.Sleep(1 * time.Second)
+		msg1 <- "one"
 	}()
-
-	select {
-	case msg := <-ch1:
-		fmt.Println(msg)
-	case <-time.After(2 * time.Second):
-		fmt.Println("timeout")
-	default:
-		fmt.Println("default")
+	go func() {
+		//time.Sleep(2 * time.Second)
+		msg2 <- "one"
+	}()
+	for i := 0; i < 2; i++ {
+		select {
+		case val := <-msg1:
+			fmt.Println(val)
+		case val := <-msg2:
+			fmt.Println(val)
+		}
 	}
-	fmt.Println("done")
-	//ch2 := make(chan string)
-	//go func() {
-	//	time.Sleep(2 * time.Second)
-	//	ch2 <- "ch2"
-	//}()
-	//for i := 0; i < 2; i++ {
-	//	select {
-	//	case msg := <-ch1:
-	//		fmt.Println(msg)
-	//	case msg := <-ch2:
-	//		fmt.Println(msg)
-	//
-	//	}
-	//}
+	fmt.Println("hi")
 }

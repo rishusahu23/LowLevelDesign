@@ -2,32 +2,30 @@ package main
 
 import "fmt"
 
-type Database interface {
-	GetData()
+type Printer interface {
+	Print(msg string)
 }
 
-type MySQLDb struct {
+type LegacyPrinter struct {
 }
 
-func (m *MySQLDb) GetDataFromMySQL() {
-	fmt.Println("my sql")
+func (lp *LegacyPrinter) OldPrint(msg string) {
+	fmt.Println("legacy: ", msg)
 }
 
-type MySQLAdapter struct {
-	mySQLDb *MySQLDb
+type Adapter struct {
+	legacyPrinter *LegacyPrinter
 }
 
-func NewMySQLAdapter(db *MySQLDb) *MySQLAdapter {
-	return &MySQLAdapter{
-		mySQLDb: db,
-	}
+func (a *Adapter) Print(msg string) {
+	a.legacyPrinter.OldPrint(msg)
 }
 
-func (m *MySQLAdapter) GetData() {
-	m.mySQLDb.GetDataFromMySQL()
-}
+var _ Printer = &Adapter{}
 
 func main() {
-	x := NewMySQLAdapter(&MySQLDb{})
-	x.GetData()
+	lg := &LegacyPrinter{}
+	adapter := &Adapter{legacyPrinter: lg}
+	var pr Printer = adapter
+	pr.Print("hello")
 }
