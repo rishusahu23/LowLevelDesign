@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
+    initial-scale=1.0">
+    <title>Log Viewer</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #log { white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+<h1>Log Viewer</h1>
+<div id="log"></div>
+
+<script>
+    const logContainer = document.getElementById('log');
+    const ws = new WebSocket('ws://localhost:8080/ws');
+
+    ws.onmessage = function(event) {
+        logContainer.textContent += event.data;
+        logContainer.scrollTop = logContainer.scrollHeight;
+    };
+
+    ws.onopen = function() {
+        console.log('WebSocket connection established.');
+    };
+
+    ws.onclose = function() {
+        console.log('WebSocket connection closed.');
+    };
+
+    ws.onerror = function(error) {
+        console.error('WebSocket error:', error);
+    };
+</script>
+</body>
+</html>
