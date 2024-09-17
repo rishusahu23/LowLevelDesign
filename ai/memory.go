@@ -32,14 +32,3 @@ func (m *Memory) Recall(key string) (string, error) {
 	}
 	return val, nil
 }
-
-// 2 stages
-// coding round
-// 3 dsa
-// leadership round
-// descritive
-// 3 questions in each round
-// null check
-// gfg
-// leet
-// inteview/bit

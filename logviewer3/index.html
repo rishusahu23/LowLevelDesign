@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Our Funky HTML Page</title>
+    <meta charset="UTF-8"  />
+    <style>
+        #log {
+            white-space: pre-wrap; /* Preserve whitespace, including line breaks */
+        }
+    </style>
+</head>
+<body>
+<h1>log viewer</h1>
+<div id="log"></div>
+
+<script>
+    const logElement = document.getElementById('log');
+    const socket = new WebSocket('ws://localhost:8080/ws');
+
+    socket.onmessage = function(event){
+        logElement.innerText+=event.data+'\n';
+    }
+
+</script>
+</body>
+</html>
